@@ -1,0 +1,1 @@
+InitProjects.cmd .\projects MemoryChannel MyCompany .\xunit-1705
