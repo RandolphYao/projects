@@ -1,0 +1,5 @@
+C:\Study\GitHub\projects\MemoryChannel\bin\Debug\MemoryChannel.App.exe
+C:\Study\GitHub\projects\MemoryChannel\bin\Debug\MemoryChannel.App.pdb
+C:\Study\GitHub\projects\MemoryChannel\source\MemoryChannel.App\obj\Debug\MemoryChannel.App.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\MemoryChannel\source\MemoryChannel.App\obj\Debug\MemoryChannel.App.exe
+C:\Study\GitHub\projects\MemoryChannel\source\MemoryChannel.App\obj\Debug\MemoryChannel.App.pdb

@@ -1,0 +1,4 @@
+C:\Study\GitHub\projects\MemoryChannel\bin\Debug\MemoryChannel.Core.dll
+C:\Study\GitHub\projects\MemoryChannel\bin\Debug\MemoryChannel.Core.pdb
+C:\Study\GitHub\projects\MemoryChannel\source\MemoryChannel.Core\obj\Debug\MemoryChannel.Core.dll
+C:\Study\GitHub\projects\MemoryChannel\source\MemoryChannel.Core\obj\Debug\MemoryChannel.Core.pdb
