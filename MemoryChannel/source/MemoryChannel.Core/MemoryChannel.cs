@@ -19,6 +19,11 @@
 
         public Task<int> ReceiveAsync(byte[] buffer)
         {
+            if (this.pendingReceiveBuffer != null)
+            {
+                throw new InvalidOperationException();
+            }
+
             this.pendingReceiveBuffer = buffer;
             this.pendingReceiveTaskSource = new TaskCompletionSource<int>();
 
@@ -51,6 +56,7 @@
             // Note that SetResult will transition the task to a completed state as well run any synchronous continuations. 
             // This can be undesirable in some situations 
             this.pendingReceiveTaskSource.SetResult(lengh);
+            this.pendingReceiveBuffer = null;
         }
     }
 }

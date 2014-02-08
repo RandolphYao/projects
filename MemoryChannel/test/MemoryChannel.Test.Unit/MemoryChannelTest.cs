@@ -264,6 +264,23 @@ namespace MemoryChannel.Test.Unit
             Assert.Equal(new byte[] { 5, 6 }, receiveBuffer3);
         }
 
+        [Fact]
+        public void Pending_receive_followed_by_another_receive_throws_InvalidOperation_without_affecting_first_receive()
+        {
+            MemoryChannel channel = new MemoryChannel();
+
+            byte[] receiveBuffer = new byte[1];
+            Task<int> receiveTask = AssertTaskPending(channel.ReceiveAsync(receiveBuffer));
+
+            byte[] receiveBuffer2 = new byte[1];
+            Assert.Throws<InvalidOperationException>(() => channel.ReceiveAsync(receiveBuffer2));
+
+            channel.Send(new byte[] { 1 });
+
+            AssertTaskCompleted(1, receiveTask);
+            Assert.Equal(new byte[] { 1 }, receiveBuffer);
+        }
+
         private static Task<TResult> AssertTaskPending<TResult>(Task<TResult> task)
         {
             Assert.False(task.IsCompleted, "Task should not be completed.");
