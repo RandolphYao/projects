@@ -281,6 +281,51 @@ namespace MemoryChannel.Test.Unit
             Assert.Equal(new byte[] { 1 }, receiveBuffer);
         }
 
+        [Fact]
+        public void Dispose_is_idempotent()
+        {
+            MemoryChannel channel = new MemoryChannel();
+            channel.Dispose();
+            channel.Dispose();
+        }
+
+        [Fact]
+        public void Dispose_after_create_causes_subsequent_send_and_receive_to_throw_ObjectDisposed()
+        {
+            MemoryChannel channel = new MemoryChannel();
+            channel.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => channel.Send(new byte[1]));
+            Assert.Throws<ObjectDisposedException>(() => channel.ReceiveAsync(new byte[1]));
+        }
+
+        [Fact]
+        public void Dispose_after_send_causes_subsequent_send_and_receive_to_throw_ObjectDisposed()
+        {
+            MemoryChannel channel = new MemoryChannel();
+
+            channel.Send(new byte[1]);
+            channel.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => channel.Send(new byte[1]));
+            Assert.Throws<ObjectDisposedException>(() => channel.ReceiveAsync(new byte[1]));
+        }
+
+        [Fact]
+        public void Dispose_completes_pending_receive_and_causes_subsequent_send_and_receive_to_throw_ObjectDisposed()
+        {
+            Task<int> receiveTask;
+            MemoryChannel channel = new MemoryChannel();
+
+            receiveTask = AssertTaskPending(channel.ReceiveAsync(new byte[1]));
+
+            channel.Dispose();
+            AssertTaskCompleted(0, receiveTask);
+
+            Assert.Throws<ObjectDisposedException>(() => channel.Send(new byte[1]));
+            Assert.Throws<ObjectDisposedException>(() => channel.ReceiveAsync(new byte[1]));
+        }
+
         private static Task<TResult> AssertTaskPending<TResult>(Task<TResult> task)
         {
             Assert.False(task.IsCompleted, "Task should not be completed.");

@@ -5,20 +5,29 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MemoryChannel
+    public class MemoryChannel : IDisposable
     {
         // store data send to the channel but did not read by receiver yet
         private List<byte> excessBuffers;
+
         private byte[] pendingReceiveBuffer;
+
         private TaskCompletionSource<int> pendingReceiveTaskSource;
+
+        private bool disposed = false;
 
         public MemoryChannel()
         {
-            this.excessBuffers = new List<byte>(); 
+            this.excessBuffers = new List<byte>();
         }
 
         public Task<int> ReceiveAsync(byte[] buffer)
         {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("Channel was disposed");
+            }
+
             if (this.pendingReceiveBuffer != null)
             {
                 throw new InvalidOperationException();
@@ -29,7 +38,7 @@
 
             if (this.excessBuffers.Count > 0)
             {
-               this.SendDataToReceiver();
+                this.SendDataToReceiver();
             }
 
             return this.pendingReceiveTaskSource.Task;
@@ -37,11 +46,48 @@
 
         public void Send(byte[] buffer)
         {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("Channel was disposed");
+            }
+
             this.excessBuffers = this.excessBuffers.Concat(buffer).ToList();
 
             if (this.pendingReceiveTaskSource != null)
             {
                 this.SendDataToReceiver();
+            }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!this.disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    // Dispose managed resources.  
+                    if (this.pendingReceiveTaskSource != null)
+                    {
+                        this.pendingReceiveTaskSource.SetResult(0);
+                    }
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+
+                // Note disposing has been done.
+                this.disposed = true;
             }
         }
 
