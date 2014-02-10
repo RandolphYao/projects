@@ -60,8 +60,8 @@
 
                 // check if there are any pending receive 
                 // it coould be this.pendingReceiveTaskSource is not null but this.pendingReceiveBuffer is null
-                // because 
-                if (this.pendingReceiveTaskSource != null)
+                // because if "send" send data to the receiver and then send again. now no pending ReceiveBuffer exist 
+                if (this.pendingReceiveTaskSource != null && this.pendingReceiveBuffer != null)
                 {
                     this.SendDataToReceiver();
                 }
