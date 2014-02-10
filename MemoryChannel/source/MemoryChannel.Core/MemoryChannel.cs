@@ -28,20 +28,23 @@
                 throw new ObjectDisposedException("Channel was disposed");
             }
 
-            if (this.pendingReceiveBuffer != null)
+            lock (this.excessBuffers)
             {
-                throw new InvalidOperationException();
+                if (this.pendingReceiveBuffer != null)
+                {
+                    throw new InvalidOperationException("A receive operation is already in progress");
+                }
+
+                this.pendingReceiveBuffer = buffer;
+                this.pendingReceiveTaskSource = new TaskCompletionSource<int>();
+
+                if (this.excessBuffers.Count > 0)
+                {
+                    this.SendDataToReceiver();
+                }
+
+                return this.pendingReceiveTaskSource.Task;
             }
-
-            this.pendingReceiveBuffer = buffer;
-            this.pendingReceiveTaskSource = new TaskCompletionSource<int>();
-
-            if (this.excessBuffers.Count > 0)
-            {
-                this.SendDataToReceiver();
-            }
-
-            return this.pendingReceiveTaskSource.Task;
         }
 
         public void Send(byte[] buffer)
@@ -51,11 +54,17 @@
                 throw new ObjectDisposedException("Channel was disposed");
             }
 
-            this.excessBuffers = this.excessBuffers.Concat(buffer).ToList();
-
-            if (this.pendingReceiveTaskSource != null)
+            lock (this.excessBuffers)
             {
-                this.SendDataToReceiver();
+                this.excessBuffers = this.excessBuffers.Concat(buffer).ToList();
+
+                // check if there are any pending receive 
+                // it coould be this.pendingReceiveTaskSource is not null but this.pendingReceiveBuffer is null
+                // because 
+                if (this.pendingReceiveTaskSource != null)
+                {
+                    this.SendDataToReceiver();
+                }
             }
         }
 
@@ -75,18 +84,12 @@
                 if (disposing)
                 {
                     // Dispose managed resources.  
-                    if (this.pendingReceiveTaskSource != null)
+                    if (this.pendingReceiveTaskSource != null && this.pendingReceiveTaskSource.Task.IsCompleted != true)
                     {
                         this.pendingReceiveTaskSource.SetResult(0);
                     }
                 }
 
-                // Call the appropriate methods to clean up 
-                // unmanaged resources here. 
-                // If disposing is false, 
-                // only the following code is executed.
-
-                // Note disposing has been done.
                 this.disposed = true;
             }
         }
@@ -100,9 +103,10 @@
             this.excessBuffers.RemoveRange(0, lengh);
 
             // Note that SetResult will transition the task to a completed state as well run any synchronous continuations. 
-            // This can be undesirable in some situations 
-            this.pendingReceiveTaskSource.SetResult(lengh);
+            // This means the continuation task will be executed immediately after SetResult() call
+            // if we place this.pendingReceiveBuffer = null; after SetResult(), the behavior is weird. 
             this.pendingReceiveBuffer = null;
+            this.pendingReceiveTaskSource.SetResult(lengh);
         }
     }
 }
