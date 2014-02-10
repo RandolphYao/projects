@@ -10,58 +10,47 @@
         // store data send to the channel but did not read by receiver yet
         private List<byte> excessBuffers;
 
-        private byte[] pendingReceiveBuffer;
+        private ReceiveRequest pendingReceiveRequest;
 
-        private TaskCompletionSource<int> pendingReceiveTaskSource;
-
-        private bool disposed = false;
+        private bool disposed;
 
         public MemoryChannel()
         {
+            // List is an array
             this.excessBuffers = new List<byte>();
+            this.disposed = false;
         }
 
         public Task<int> ReceiveAsync(byte[] buffer)
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException("Channel was disposed");
-            }
+            this.ThrowIfDisposed();
+            Task<int> resultTask; 
 
             lock (this.excessBuffers)
             {
-                if (this.pendingReceiveBuffer != null)
+                if (this.pendingReceiveRequest != null)
                 {
                     throw new InvalidOperationException("A receive operation is already in progress");
                 }
 
-                this.pendingReceiveBuffer = buffer;
-                this.pendingReceiveTaskSource = new TaskCompletionSource<int>();
+                this.pendingReceiveRequest = new ReceiveRequest(buffer);
+                resultTask = this.pendingReceiveRequest.ReceiveTask;
 
-                if (this.excessBuffers.Count > 0)
-                {
-                    this.SendDataToReceiver();
-                }
-
-                return this.pendingReceiveTaskSource.Task;
+                this.SendDataToReceiver();
             }
+
+            return resultTask;
         }
 
         public void Send(byte[] buffer)
         {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException("Channel was disposed");
-            }
+            this.ThrowIfDisposed();
 
             lock (this.excessBuffers)
             {
                 this.excessBuffers = this.excessBuffers.Concat(buffer).ToList();
 
-                // check if there are any pending receive 
-                // it coould be this.pendingReceiveTaskSource is not null but this.pendingReceiveBuffer is null
-                // because if "send" send data to the receiver and then send again. now no pending ReceiveBuffer exist 
-                if (this.pendingReceiveTaskSource != null && this.pendingReceiveBuffer != null)
+                if (this.pendingReceiveRequest != null)
                 {
                     this.SendDataToReceiver();
                 }
@@ -84,9 +73,9 @@
                 if (disposing)
                 {
                     // Dispose managed resources.  
-                    if (this.pendingReceiveTaskSource != null && this.pendingReceiveTaskSource.Task.IsCompleted != true)
+                    if (this.pendingReceiveRequest != null && this.pendingReceiveRequest.ReceiveTask.IsCompleted != true)
                     {
-                        this.pendingReceiveTaskSource.SetResult(0);
+                        this.pendingReceiveRequest.CompleteRequest();
                     }
                 }
 
@@ -96,17 +85,73 @@
 
         private void SendDataToReceiver()
         {
-            int lengh = this.excessBuffers.Count > this.pendingReceiveBuffer.Length
-                            ? this.pendingReceiveBuffer.Length
-                            : this.excessBuffers.Count;
-            Array.Copy(this.excessBuffers.ToArray(), 0, this.pendingReceiveBuffer, 0, lengh);
-            this.excessBuffers.RemoveRange(0, lengh);
+            bool dataSend = false;
+            while (this.excessBuffers.Count > 0 && this.pendingReceiveRequest.RemainingReceiveBufferSize > 0)
+            {
+                int length = this.pendingReceiveRequest.AddReceiveData(this.excessBuffers.ToArray());
+                dataSend = true;
+                this.excessBuffers.RemoveRange(0, length);
+            }
 
-            // Note that SetResult will transition the task to a completed state as well run any synchronous continuations. 
-            // This means the continuation task will be executed immediately after SetResult() call
-            // if we place this.pendingReceiveBuffer = null; after SetResult(), the behavior is weird. 
-            this.pendingReceiveBuffer = null;
-            this.pendingReceiveTaskSource.SetResult(lengh);
+            if (dataSend)
+            {
+                ReceiveRequest requestResult = this.pendingReceiveRequest;
+
+                /* due to the synchronous continuation execution after SetResult to the pendingReceive task
+                 * the SetResult must be after null assignment to this.pendingReceiveRequest
+                 * otherwise, the conitnuation task might execute before null assignment to this.pendingReceiveRequest
+                 */
+                this.pendingReceiveRequest = null;
+                requestResult.CompleteRequest();
+            }
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (this.disposed)
+            {
+                throw new ObjectDisposedException("Channel was disposed");
+            }
+        }
+
+        private class ReceiveRequest
+        {
+            private readonly TaskCompletionSource<int> pendingReceiveTaskSource;
+
+            private readonly byte[] receiveBufferToBeFilled;
+
+            private int totalBytesReceived;
+
+            public ReceiveRequest(byte[] receiveBufferToBeFilled)
+            {
+                this.receiveBufferToBeFilled = receiveBufferToBeFilled;
+                this.pendingReceiveTaskSource = new TaskCompletionSource<int>();
+                this.RemainingReceiveBufferSize = receiveBufferToBeFilled.Length;
+            }
+
+            public int RemainingReceiveBufferSize { get; private set; }
+
+            public Task<int> ReceiveTask
+            {
+                get
+                {
+                    return this.pendingReceiveTaskSource.Task;
+                }
+            }
+
+            public int AddReceiveData(byte[] receiveData)
+            {
+                int bytesReceived = Math.Min(this.RemainingReceiveBufferSize, receiveData.Length);
+                this.RemainingReceiveBufferSize -= bytesReceived;
+                Array.Copy(receiveData, 0, this.receiveBufferToBeFilled, this.totalBytesReceived, bytesReceived);
+                this.totalBytesReceived += bytesReceived;
+                return bytesReceived;
+            }
+
+            public void CompleteRequest()
+            {
+                this.pendingReceiveTaskSource.SetResult(this.totalBytesReceived);
+            }
         }
     }
 }
