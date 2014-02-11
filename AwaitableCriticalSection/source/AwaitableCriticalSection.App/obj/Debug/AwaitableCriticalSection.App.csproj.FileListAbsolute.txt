@@ -1,0 +1,5 @@
+C:\Study\GitHub\projects\AwaitableCriticalSection\source\AwaitableCriticalSection.App\obj\Debug\AwaitableCriticalSection.App.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\AwaitableCriticalSection\bin\Debug\AwaitableCriticalSection.App.exe
+C:\Study\GitHub\projects\AwaitableCriticalSection\bin\Debug\AwaitableCriticalSection.App.pdb
+C:\Study\GitHub\projects\AwaitableCriticalSection\source\AwaitableCriticalSection.App\obj\Debug\AwaitableCriticalSection.App.exe
+C:\Study\GitHub\projects\AwaitableCriticalSection\source\AwaitableCriticalSection.App\obj\Debug\AwaitableCriticalSection.App.pdb
