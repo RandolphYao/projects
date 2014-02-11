@@ -21,28 +21,52 @@ namespace ConcurrentLoad
             this.maxPendingCalls = maxPendingCalls;
         }
 
-        public Task RunAsync(int totalCalls)
+        public async Task RunAsync(int totalCalls)
         {
             AsyncSemaphore asyncSemaphore = new AsyncSemaphore(this.maxPendingCalls);
+ 
+            List<Exception> exceptions = new List<Exception>();
             List<Task> tasks = new List<Task>();
+
             for (int i = 0; i < totalCalls; i++)
             {
-                tasks.Add(this.RunAsyncInner(asyncSemaphore));
+                // need this to ensure the code below await only execute after entering critical section
+                await asyncSemaphore.WaitAsync();
+                Task newTask = this.RunAsyncInner(asyncSemaphore); 
+                tasks.Add(newTask);
+                this.DetectExceptionsFromPendingTasks(tasks, exceptions);
+                if (exceptions.Count > 0)
+                {
+                    throw new AggregateException(exceptions).Flatten();
+                }
             }
 
-            return Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
+        }
+
+        private void DetectExceptionsFromPendingTasks(List<Task> tasks, List<Exception> exceptions)
+        {
+            foreach (var task in tasks)
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Exception != null)
+                    {
+                        exceptions.Add(task.Exception);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
         }
 
         private async Task RunAsyncInner(AsyncSemaphore asyncSemaphore)
         {
-            await asyncSemaphore.WaitAsync();
             try
             {
                 await this.doAsync();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
