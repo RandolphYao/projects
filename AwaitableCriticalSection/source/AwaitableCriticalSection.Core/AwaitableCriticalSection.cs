@@ -31,7 +31,7 @@ namespace AwaitableCriticalSection
                 if (this.processingRequest == null)
                 {
                     this.processingRequest = this.comingRequest;
-                    this.comingRequest.GrantRequest();
+                    this.comingRequest.GrantRequestAndRunContinuation();
                 }
                 else
                 {
@@ -57,10 +57,13 @@ namespace AwaitableCriticalSection
                 if (this.acquireRequests.Count > 0)
                 {
                     this.processingRequest = this.acquireRequests.Dequeue();
-
-                    // to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations, under a lock
-                    this.processingRequest.GrantRequest();
                 }
+            }
+
+            if (this.processingRequest != null)
+            {
+                // to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations, under a lock
+                this.processingRequest.GrantRequestAndRunContinuation();
             }
         }
 
@@ -95,7 +98,7 @@ namespace AwaitableCriticalSection
                 }
             }
 
-            public void GrantRequest()
+            public void GrantRequestAndRunContinuation()
             {
                 this.tcs.SetResult(this);
             }

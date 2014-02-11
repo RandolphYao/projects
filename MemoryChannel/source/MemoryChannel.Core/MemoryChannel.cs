@@ -24,8 +24,9 @@
         public Task<int> ReceiveAsync(byte[] buffer)
         {
             this.ThrowIfDisposed();
-            Task<int> resultTask; 
+            Task<int> resultTask;
 
+            ReceiveRequest requestResult = null;
             lock (this.excessBuffers)
             {
                 if (this.pendingReceiveRequest != null)
@@ -36,8 +37,24 @@
                 this.pendingReceiveRequest = new ReceiveRequest(buffer);
                 resultTask = this.pendingReceiveRequest.ReceiveTask;
 
-				// to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
-                this.SendDataToReceiver();
+                bool dataSend = this.SendDataToReceiver();
+
+                if (dataSend)
+                {
+                    requestResult = this.pendingReceiveRequest;
+
+                    /* due to the synchronous continuation execution after SetResult to the pendingReceive task
+                     * the SetResult must be after null assignment to this.pendingReceiveRequest
+                     * otherwise, the conitnuation task might execute before null assignment to this.pendingReceiveRequest
+                     */
+                    this.pendingReceiveRequest = null;
+                }
+            }
+
+            // to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
+            if (requestResult != null)
+            {
+                requestResult.CompleteRequest();
             }
 
             return resultTask;
@@ -47,15 +64,32 @@
         {
             this.ThrowIfDisposed();
 
+            ReceiveRequest requestResult = null;
             lock (this.excessBuffers)
             {
                 this.excessBuffers = this.excessBuffers.Concat(buffer).ToList();
 
                 if (this.pendingReceiveRequest != null)
                 {
-					// to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
-                    this.SendDataToReceiver();
+                    bool dataSend = this.SendDataToReceiver();
+
+                    if (dataSend)
+                    {
+                        requestResult = this.pendingReceiveRequest;
+
+                        /* due to the synchronous continuation execution after SetResult to the pendingReceive task
+                         * the SetResult must be after null assignment to this.pendingReceiveRequest
+                         * otherwise, the conitnuation task might execute before null assignment to this.pendingReceiveRequest
+                         */
+                        this.pendingReceiveRequest = null;
+                    }
                 }
+            }
+
+            // to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
+            if (requestResult != null)
+            {
+                requestResult.CompleteRequest();
             }
         }
 
@@ -85,7 +119,7 @@
             }
         }
 
-        private void SendDataToReceiver()
+        private bool SendDataToReceiver()
         {
             bool dataSend = false;
             while (this.excessBuffers.Count > 0 && this.pendingReceiveRequest.RemainingReceiveBufferSize > 0)
@@ -95,17 +129,7 @@
                 this.excessBuffers.RemoveRange(0, length);
             }
 
-            if (dataSend)
-            {
-                ReceiveRequest requestResult = this.pendingReceiveRequest;
-
-                /* due to the synchronous continuation execution after SetResult to the pendingReceive task
-                 * the SetResult must be after null assignment to this.pendingReceiveRequest
-                 * otherwise, the conitnuation task might execute before null assignment to this.pendingReceiveRequest
-                 */
-                this.pendingReceiveRequest = null;
-                requestResult.CompleteRequest();
-            }
+            return dataSend;
         }
 
         private void ThrowIfDisposed()

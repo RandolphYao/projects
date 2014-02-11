@@ -46,9 +46,6 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="1521953606">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="AwaitableCriticalSectionTest.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
@@ -72,4 +69,7 @@
     </timestamps>
     <violations />
   </sourcecode>
+  <project key="1521953606">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
 </stylecopresultscache>

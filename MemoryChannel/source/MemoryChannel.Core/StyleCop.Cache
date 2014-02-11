@@ -1,8 +1,5 @@
 <stylecopresultscache>
   <version>12</version>
-  <project key="1470860588">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
@@ -26,11 +23,11 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="MemoryChannel.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name=".NETFramework,Version=v4.5.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
       <settingsFile>2014/02/08 12:15:43.600</settingsFile>
-      <sourceFile>2014/02/10 13:59:08.382</sourceFile>
+      <sourceFile>2013/11/09 11:01:51.197</sourceFile>
       <parser>2013/09/19 14:09:50.000</parser>
       <StyleCop.CSharp.DocumentationRules>2013/09/19 14:09:50.000</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1157575881</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -49,11 +46,14 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name=".NETFramework,Version=v4.5.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
+  <project key="1470860588">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="MemoryChannel.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
       <settingsFile>2014/02/08 12:15:43.600</settingsFile>
-      <sourceFile>2013/11/09 11:01:51.197</sourceFile>
+      <sourceFile>2014/02/11 00:46:09.122</sourceFile>
       <parser>2013/09/19 14:09:50.000</parser>
       <StyleCop.CSharp.DocumentationRules>2013/09/19 14:09:50.000</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1157575881</StyleCop.CSharp.DocumentationRules.FilesHashCode>
