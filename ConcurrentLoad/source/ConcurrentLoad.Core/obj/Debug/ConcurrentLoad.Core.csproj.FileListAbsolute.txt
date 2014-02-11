@@ -1,0 +1,5 @@
+C:\Study\GitHub\projects\ConcurrentLoad\bin\Debug\ConcurrentLoad.Core.dll
+C:\Study\GitHub\projects\ConcurrentLoad\bin\Debug\ConcurrentLoad.Core.pdb
+C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.Core\obj\Debug\ConcurrentLoad.Core.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.Core\obj\Debug\ConcurrentLoad.Core.dll
+C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.Core\obj\Debug\ConcurrentLoad.Core.pdb
