@@ -12,7 +12,7 @@ namespace AwaitableCriticalSection
     {
         private static void Main(string[] args)
         {
-            AwaitableCriticalSection c = new AwaitableCriticalSection("world");
+            AwaitableCriticalSection c = new AwaitableCriticalSection();
         }
     }
 }

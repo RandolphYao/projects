@@ -18,9 +18,21 @@ namespace AwaitableCriticalSection.Test.Unit
         [Fact]
         public void Acquire_completes_sync_then_release_succeeds()
         {
-            AwaitableCriticalSection acs = new AwaitableCriticalSection("name");
+            AwaitableCriticalSection acs = new AwaitableCriticalSection();
             var token = AssertTaskCompleted(acs.AcquireAsync());
             acs.Release(token);
+        }
+
+        [Fact]
+        public void First_acquire_completes_sync_next_acquire_is_pending_until_first_release()
+        {
+            AwaitableCriticalSection l = new AwaitableCriticalSection();
+            AwaitableCriticalSection.Token token = AssertTaskCompleted(l.AcquireAsync());
+
+            Task<AwaitableCriticalSection.Token> nextAcquireTask = AssertTaskPending(l.AcquireAsync());
+            l.Release(token);
+
+            AssertTaskCompleted(nextAcquireTask);
         }
 
         private static Task<TResult> AssertTaskPending<TResult>(Task<TResult> task)

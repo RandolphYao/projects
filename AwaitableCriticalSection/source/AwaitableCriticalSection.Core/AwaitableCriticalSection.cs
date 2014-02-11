@@ -3,29 +3,60 @@
 // Copyright (c) MyCompany. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-
 namespace AwaitableCriticalSection
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public class AwaitableCriticalSection
     {
-        private readonly string name;
+        private readonly Queue<AcquireRequest> acquireRequests;
 
-        public AwaitableCriticalSection(string name)
+        private AcquireRequest comingRequest;
+
+        private AcquireRequest processingRequest;
+
+        public AwaitableCriticalSection()
         {
-            this.name = name;
+            this.acquireRequests = new Queue<AcquireRequest>();
         }
 
         public Task<Token> AcquireAsync()
         {
-            throw new NotImplementedException();
+            this.comingRequest = new AcquireRequest();
+            Task<Token> resultTask = this.comingRequest.AcquireTask;
+            lock (this.acquireRequests)
+            {
+                if (this.processingRequest == null)
+                {
+                    this.processingRequest = this.comingRequest;
+                    this.comingRequest.GrantRequest();
+                }
+                else
+                {
+                    this.acquireRequests.Enqueue(this.comingRequest);
+                }
+            }
+
+            return resultTask;
         }
 
         public void Release(Token token)
         {
-            throw new NotImplementedException();
+            if (this.processingRequest != token)
+            {
+                throw new InvalidOperationException("Invalid owner token");
+            }
+
+            lock (this.acquireRequests)
+            {
+                if (this.acquireRequests.Count > 0)
+                {
+                    this.processingRequest = this.acquireRequests.Dequeue();
+                    this.processingRequest.GrantRequest();
+                }
+            }
         }
 
         /*
@@ -35,10 +66,33 @@ namespace AwaitableCriticalSection
          * The Token is a design fix to prevent this problem from ever occurring in any reasonable situation 
          * — at the expense of one additional object allocation.
          */
-        public class Token
+        public abstract class Token
         {
             protected Token()
             {
+            }
+        }
+
+        private sealed class AcquireRequest : Token
+        {
+            private readonly TaskCompletionSource<Token> tcs;
+
+            public AcquireRequest()
+            {
+                this.tcs = new TaskCompletionSource<Token>();
+            }
+
+            public Task<Token> AcquireTask
+            {
+                get
+                {
+                    return this.tcs.Task;
+                }
+            }
+
+            public void GrantRequest()
+            {
+                this.tcs.SetResult(this);
             }
         }
     }
