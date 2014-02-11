@@ -1,5 +1,5 @@
-C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.App\obj\Debug\ConcurrentLoad.App.csprojResolveAssemblyReference.cache
 C:\Study\GitHub\projects\ConcurrentLoad\bin\Debug\ConcurrentLoad.App.exe
 C:\Study\GitHub\projects\ConcurrentLoad\bin\Debug\ConcurrentLoad.App.pdb
+C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.App\obj\Debug\ConcurrentLoad.App.csprojResolveAssemblyReference.cache
 C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.App\obj\Debug\ConcurrentLoad.App.exe
 C:\Study\GitHub\projects\ConcurrentLoad\source\ConcurrentLoad.App\obj\Debug\ConcurrentLoad.App.pdb

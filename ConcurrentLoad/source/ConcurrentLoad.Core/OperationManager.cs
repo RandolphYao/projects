@@ -21,22 +21,23 @@ namespace ConcurrentLoad
             this.maxPendingCalls = maxPendingCalls;
         }
 
-        public async Task RunAsync(int totalCalls)
+        public Task RunAsync(int totalCalls)
         {
-            int remainingCalls = totalCalls;
-
-            while (remainingCalls > 0)
+            AsyncSemaphore asyncSemaphore = new AsyncSemaphore(this.maxPendingCalls);
+            List<Task> tasks = new List<Task>();
+            for (int i = 0; i < totalCalls; i++)
             {
-                int calls = Math.Min(this.maxPendingCalls, remainingCalls);
-                var tasks = new List<Task>();
-                for (int i = 0; i < calls; i++)
-                {
-                    tasks.Add(this.doAsync());
-                    remainingCalls--;
-                }
-
-                await Task.WhenAll(tasks); 
+                tasks.Add(this.RunAsyncInner(asyncSemaphore));
             }
+
+            return Task.WhenAll(tasks);
+        }
+
+        private async Task RunAsyncInner(AsyncSemaphore asyncSemaphore)
+        {
+            await asyncSemaphore.WaitAsync();
+            await this.doAsync();
+            asyncSemaphore.Release();
         }
     }
 }
