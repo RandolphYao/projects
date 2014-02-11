@@ -57,6 +57,8 @@ namespace AwaitableCriticalSection
                 if (this.acquireRequests.Count > 0)
                 {
                     this.processingRequest = this.acquireRequests.Dequeue();
+
+                    // to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations, under a lock
                     this.processingRequest.GrantRequest();
                 }
             }

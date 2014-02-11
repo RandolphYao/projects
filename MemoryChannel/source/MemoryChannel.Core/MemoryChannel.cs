@@ -36,6 +36,7 @@
                 this.pendingReceiveRequest = new ReceiveRequest(buffer);
                 resultTask = this.pendingReceiveRequest.ReceiveTask;
 
+				// to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
                 this.SendDataToReceiver();
             }
 
@@ -52,6 +53,7 @@
 
                 if (this.pendingReceiveRequest != null)
                 {
+					// to prevent deadlocks, you should generally avoid running arbitrary user code such as event handlers or in this case, continuations (invoked by SetResult), under a lock
                     this.SendDataToReceiver();
                 }
             }
