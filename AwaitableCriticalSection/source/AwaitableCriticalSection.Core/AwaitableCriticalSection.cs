@@ -51,6 +51,9 @@ namespace AwaitableCriticalSection
 
             lock (this.acquireRequests)
             {
+                // need to clean it before grant the next request!! 
+                this.processingRequest = null; 
+
                 if (this.acquireRequests.Count > 0)
                 {
                     this.processingRequest = this.acquireRequests.Dequeue();

@@ -1,8 +1,5 @@
 <stylecopresultscache>
   <version>12</version>
-  <project key="-245136506">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
@@ -26,11 +23,11 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name="AwaitableCriticalSection.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name=".NETFramework,Version=v4.5.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
       <settingsFile>2014/02/10 22:37:10.032</settingsFile>
-      <sourceFile>2014/02/10 23:32:44.346</sourceFile>
+      <sourceFile>2013/11/09 11:01:51.197</sourceFile>
       <parser>2013/09/19 14:09:50.000</parser>
       <StyleCop.CSharp.DocumentationRules>2013/09/19 14:09:50.000</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1157575881</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -49,11 +46,14 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <sourcecode name=".NETFramework,Version=v4.5.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
+  <project key="-245136506">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="AwaitableCriticalSection.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
       <settingsFile>2014/02/10 22:37:10.032</settingsFile>
-      <sourceFile>2013/11/09 11:01:51.197</sourceFile>
+      <sourceFile>2014/02/10 23:40:10.191</sourceFile>
       <parser>2013/09/19 14:09:50.000</parser>
       <StyleCop.CSharp.DocumentationRules>2013/09/19 14:09:50.000</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1157575881</StyleCop.CSharp.DocumentationRules.FilesHashCode>

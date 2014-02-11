@@ -6,6 +6,7 @@
 
 namespace AwaitableCriticalSection.Test.Unit
 {
+    using System;
     using System.Threading.Tasks;
     using Xunit;
 
@@ -35,6 +36,58 @@ namespace AwaitableCriticalSection.Test.Unit
             AssertTaskCompleted(nextAcquireTask);
         }
 
+        [Fact]
+        public void Release_invalid_token_throws_InvalidOperation()
+        {
+            AwaitableCriticalSection l = new AwaitableCriticalSection();
+
+            Assert.Throws<InvalidOperationException>(() => l.Release(new MyToken()));
+        }
+
+        [Fact]
+        public void Release_same_token_twice_throws_InvalidOperation()
+        {
+            AwaitableCriticalSection l = new AwaitableCriticalSection();
+
+            AwaitableCriticalSection.Token token = AssertTaskCompleted(l.AcquireAsync());
+
+            l.Release(token);
+            Assert.Throws<InvalidOperationException>(() => l.Release(token));
+        }
+
+        [Fact]
+        public void Three_acquires_first_completes_sync_next_acquires_are_pending_until_previous_owners_release()
+        {
+            AwaitableCriticalSection l = new AwaitableCriticalSection();
+            AwaitableCriticalSection.Token token1 = AssertTaskCompleted(l.AcquireAsync());
+
+            Task<AwaitableCriticalSection.Token> acquireTask1 = AssertTaskPending(l.AcquireAsync());
+            Task<AwaitableCriticalSection.Token> acquireTask2 = AssertTaskPending(l.AcquireAsync());
+
+            l.Release(token1);
+
+            AwaitableCriticalSection.Token token2 = AssertTaskCompleted(acquireTask1);
+
+            l.Release(token2);
+
+            AssertTaskCompleted(acquireTask2);
+        }
+
+        [Fact]
+        public void Acquire_and_release_three_times_in_a_row_completes_sync_each_time()
+        {
+            AwaitableCriticalSection l = new AwaitableCriticalSection();
+
+            AwaitableCriticalSection.Token token1 = AssertTaskCompleted(l.AcquireAsync());
+            l.Release(token1);
+
+            AwaitableCriticalSection.Token token2 = AssertTaskCompleted(l.AcquireAsync());
+            l.Release(token2);
+
+            AwaitableCriticalSection.Token token3 = AssertTaskCompleted(l.AcquireAsync());
+            l.Release(token3);
+        }
+
         private static Task<TResult> AssertTaskPending<TResult>(Task<TResult> task)
         {
             Assert.False(task.IsCompleted, "Task should not be completed.");
@@ -56,6 +109,10 @@ namespace AwaitableCriticalSection.Test.Unit
             // In other words, IsCompleted is equivalent to the Task.Status being equal to RanToCompletion, Faulted, or Canceled
             Assert.Equal(TaskStatus.RanToCompletion, task.Status);
             return task.Result; 
+        }
+
+        private sealed class MyToken : AwaitableCriticalSection.Token
+        {
         }
     }
 }
