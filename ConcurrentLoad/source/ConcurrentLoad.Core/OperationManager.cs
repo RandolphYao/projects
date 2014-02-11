@@ -36,8 +36,18 @@ namespace ConcurrentLoad
         private async Task RunAsyncInner(AsyncSemaphore asyncSemaphore)
         {
             await asyncSemaphore.WaitAsync();
-            await this.doAsync();
-            asyncSemaphore.Release();
+            try
+            {
+                await this.doAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                asyncSemaphore.Release();
+            }          
         }
     }
 }

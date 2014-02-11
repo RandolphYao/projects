@@ -69,11 +69,14 @@
     </timestamps>
     <violations />
   </sourcecode>
+  <project key="-944540420">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
   <sourcecode name="OperationManager.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>
       <settingsFile>2014/02/11 10:54:28.029</settingsFile>
-      <sourceFile>2014/02/11 12:44:22.005</sourceFile>
+      <sourceFile>2014/02/11 12:50:17.291</sourceFile>
       <parser>2013/09/19 14:09:50.000</parser>
       <StyleCop.CSharp.DocumentationRules>2013/09/19 14:09:50.000</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1157575881</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -92,7 +95,4 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="-944540420">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
 </stylecopresultscache>
