@@ -1,0 +1,7 @@
+C:\Study\GitHub\projects\PlaSample\bin\Debug\PlaSample.Core.dll
+C:\Study\GitHub\projects\PlaSample\bin\Debug\PlaSample.Core.pdb
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.Core\obj\Debug\PlaSample.Core.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.Core\obj\Debug\Interop.PlaLibrary.dll
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.Core\obj\Debug\PlaSample.Core.csproj.ResolveComReference.cache
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.Core\obj\Debug\PlaSample.Core.dll
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.Core\obj\Debug\PlaSample.Core.pdb

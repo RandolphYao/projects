@@ -1,0 +1,5 @@
+C:\Study\GitHub\projects\PlaSample\bin\Debug\PlaSample.App.exe
+C:\Study\GitHub\projects\PlaSample\bin\Debug\PlaSample.App.pdb
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.App\obj\Debug\PlaSample.App.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.App\obj\Debug\PlaSample.App.exe
+C:\Study\GitHub\projects\PlaSample\source\PlaSample.App\obj\Debug\PlaSample.App.pdb
