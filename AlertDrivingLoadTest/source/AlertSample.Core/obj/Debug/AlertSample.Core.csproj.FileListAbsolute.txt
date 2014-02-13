@@ -4,3 +4,9 @@ C:\Study\GitHub\projects\AlertSample\source\AlertSample.Core\obj\Debug\Interop.P
 C:\Study\GitHub\projects\AlertSample\source\AlertSample.Core\obj\Debug\AlertSample.Core.csproj.ResolveComReference.cache
 C:\Study\GitHub\projects\AlertSample\source\AlertSample.Core\obj\Debug\AlertSample.Core.dll
 C:\Study\GitHub\projects\AlertSample\source\AlertSample.Core\obj\Debug\AlertSample.Core.pdb
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Debug\AlertSample.Core.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Debug\AlertSample.Core.pdb
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Debug\Interop.PlaLibrary.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Debug\AlertSample.Core.csproj.ResolveComReference.cache
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Debug\AlertSample.Core.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Debug\AlertSample.Core.pdb

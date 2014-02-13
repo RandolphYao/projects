@@ -1,0 +1,7 @@
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Release\AlertSample.Core.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Release\AlertSample.Core.pdb
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Release\AlertSample.Core.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Release\Interop.PlaLibrary.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Release\AlertSample.Core.csproj.ResolveComReference.cache
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Release\AlertSample.Core.dll
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.Core\obj\Release\AlertSample.Core.pdb

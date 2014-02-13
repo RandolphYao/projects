@@ -3,6 +3,9 @@
   <project key="781787105">
     <configuration>DEBUG;TRACE</configuration>
   </project>
+  <project key="-1642027603">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
   <sourcecode name="ThresholdCondition.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2013/09/19 14:09:50.000</styleCop>

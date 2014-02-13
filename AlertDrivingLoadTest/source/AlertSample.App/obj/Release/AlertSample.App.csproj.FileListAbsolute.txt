@@ -1,0 +1,5 @@
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Release\AlertSample.App.exe
+C:\Study\GitHub\projects\AlertDrivingLoadTest\bin\Release\AlertSample.App.pdb
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.App\obj\Release\AlertSample.App.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.App\obj\Release\AlertSample.App.exe
+C:\Study\GitHub\projects\AlertDrivingLoadTest\source\AlertSample.App\obj\Release\AlertSample.App.pdb

@@ -13,7 +13,7 @@ namespace PlaSample
     {
         private static void Main(string[] args)
         {
-            CreateRealTimeTraceCollector();
+            // CreateRealTimeTraceCollector();
             CreatePerfCounterAlert();
             CreateTraceCollector();
             CreatePerfCounterCollector();
