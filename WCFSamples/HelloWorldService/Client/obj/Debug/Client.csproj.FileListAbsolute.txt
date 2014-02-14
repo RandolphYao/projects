@@ -1,0 +1,8 @@
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\bin\Debug\Client.exe.config
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\bin\Debug\Client.exe
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\bin\Debug\Client.pdb
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\bin\Debug\HelloWorldService.dll
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\bin\Debug\HelloWorldService.pdb
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\obj\Debug\Client.exe
+C:\Study\GitHub\projects\WCFSamples\HelloWorldService\Client\obj\Debug\Client.pdb

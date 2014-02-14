@@ -1,0 +1,3 @@
+Ctrl + F5 to launch the service in VS while adding code! 
+
+launch the service in admin mode
