@@ -1,0 +1,8 @@
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\bin\Debug\ConsoleHost.exe.config
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\bin\Debug\ConsoleHost.exe
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\bin\Debug\ConsoleHost.pdb
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\bin\Debug\EvalService.dll
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\bin\Debug\EvalService.pdb
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\obj\Debug\ConsoleHost.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\obj\Debug\ConsoleHost.exe
+C:\Study\GitHub\projects\WCFSamples\EvalService\ConsoleHost\obj\Debug\ConsoleHost.pdb
