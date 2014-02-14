@@ -1,0 +1,6 @@
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\bin\Debug\EvalService.dll.config
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\bin\Debug\EvalService.dll
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\bin\Debug\EvalService.pdb
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\obj\Debug\EvalService.csprojResolveAssemblyReference.cache
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\obj\Debug\EvalService.dll
+C:\Study\GitHub\projects\WCFSamples\EvalService\EvalService\obj\Debug\EvalService.pdb
